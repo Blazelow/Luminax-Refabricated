@@ -13,6 +13,8 @@ import dev.satherov.luminax.common.block.LuminaxStair;
 import dev.satherov.luminax.common.block.LuminaxWall;
 import dev.satherov.luminax.common.item.LuminaxWandItem;
 
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,7 +33,6 @@ import com.mojang.serialization.Codec;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -75,7 +76,7 @@ public final class LXRegistry {
     public static final LuminaxButton BUTTON = LXRegistry.register("luminax_button", LuminaxButton::new);
     public static final BlockEntityType<LuminaxBlockEntity> BLOCK_ENTITY = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE, Luminax.id("glass_tile"),
-            new BlockEntityType<>(LuminaxBlockEntity::new, Set.copyOf(LXRegistry.BLOCKS))
+            FabricBlockEntityTypeBuilder.create(LuminaxBlockEntity::new, LXRegistry.BLOCKS.toArray(Block[]::new)).build()
     );
     
     private static <T extends Item> T registerItem(String name, Function<Item.Properties, T> factory) {
