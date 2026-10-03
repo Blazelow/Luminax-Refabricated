@@ -9,7 +9,7 @@ This very simple mod adds a handful of single-colored blocks to the game.
 
 You can the **Luminax Wand** to modify color and the light emission of the block.
 
-This is the **Fabric** port for Minecraft 26.1.2 (requires Fabric API). The Framed Blocks integration is not available on Fabric.
+This is the **Fabric** port for Minecraft 26.2 (requires Fabric API). The Framed Blocks integration is not available on Fabric.
 
 Currently included blocks are:  
  - Full block  
