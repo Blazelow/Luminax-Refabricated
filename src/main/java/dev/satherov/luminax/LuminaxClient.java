@@ -35,7 +35,7 @@ public class LuminaxClient implements ClientModInitializer {
     public static final KeyMapping TOGGLE_GLOWING = LuminaxClient.KEYBINDS.add(LXLanguage.KEY_TOGGLE_GLOWING, GLFW.GLFW_KEY_X, () -> {
         final Minecraft mc = Minecraft.getInstance();
         final Player player = mc.player;
-        if (mc.level == null || player == null || mc.screen != null) return;
+        if (mc.level == null || player == null || mc.gui.screen() != null) return;
         
         final ItemStack stack = LuminaxWandItem.find(player);
         if (stack.isEmpty()) return;
@@ -47,13 +47,13 @@ public class LuminaxClient implements ClientModInitializer {
     public static final KeyMapping OPEN_COLOR_PICKER = LuminaxClient.KEYBINDS.add(LXLanguage.KEY_OPEN_COLOR_PICKER, GLFW.GLFW_KEY_V, () -> {
         final Minecraft mc = Minecraft.getInstance();
         final Player player = mc.player;
-        if (mc.level == null || player == null || mc.screen != null) return;
+        if (mc.level == null || player == null || mc.gui.screen() != null) return;
         
         final ItemStack stack = LuminaxWandItem.find(player);
         if (stack.isEmpty()) return;
         
-        if (mc.screen instanceof LXColorScreen) mc.setScreen(null);
-        else mc.setScreen(new LXColorScreen(stack));
+        if (mc.gui.screen() instanceof LXColorScreen) mc.gui.setScreen(null);
+        else mc.gui.setScreen(new LXColorScreen(stack));
     });
     private static final List<BlockTintSource> LUMINAX_BLOCK_TINT = List.of(new BlockTintSource() {
         
