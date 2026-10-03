@@ -53,7 +53,9 @@ dependencies {
     compileOnly("mezz.jei:jei-26.1.2-fabric-api:${jei_version}")
     runtimeOnly("mezz.jei:jei-26.1.2-fabric:${jei_version}")
 
-    implementation "maven.modrinth:jade:${jade_version}"
+    if (project.hasProperty('jade_version') && project.jade_version) {
+        implementation "maven.modrinth:jade:${jade_version}"
+    }
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
