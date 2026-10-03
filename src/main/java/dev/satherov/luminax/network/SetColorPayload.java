@@ -5,56 +5,34 @@ import dev.satherov.luminax.common.item.LuminaxWandItem;
 import dev.satherov.luminax.core.LXProperties;
 import dev.satherov.luminax.core.LXRegistry;
 import dev.satherov.sathlib.core.annotations.NothingNull;
-import dev.satherov.sathlib.network.handling.SLPayload;
-import dev.satherov.sathlib.network.handling.ServerPayloadProvider;
-
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
 @NothingNull
-public record SetColorPayload(int color) implements SLPayload<SetColorPayload> {
+public record SetColorPayload(int color) implements CustomPacketPayload {
     
-    private static final Type<SetColorPayload> TYPE = SLPayload.type(Luminax.id("set_color"));
+    public static final Type<SetColorPayload> TYPE = new Type<>(Luminax.id("set_color"));
     
-    private static final StreamCodec<RegistryFriendlyByteBuf, SetColorPayload> STREAM_CODEC = SLPayload.codec(SetColorPayload::encode, SetColorPayload::new);
-    
-    private SetColorPayload(RegistryFriendlyByteBuf buf) {
-        this(buf.readInt());
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, SetColorPayload> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, SetColorPayload::color,
+            SetColorPayload::new
+    );
     
     @Override
     public Type<SetColorPayload> type() {
         return SetColorPayload.TYPE;
     }
     
-    @Override
-    public void encode(RegistryFriendlyByteBuf buf) {
-        buf.writeInt(this.color);
-    }
-    
-    public static final class Provider implements ServerPayloadProvider<SetColorPayload> {
+    public static void handle(SetColorPayload payload, ServerPlayer player) {
+        final ItemStack stack = LuminaxWandItem.find(player);
+        if (stack.isEmpty()) return;
         
-        @Override
-        public void handle(SetColorPayload payload, IPayloadContext context, ServerPlayer player) {
-            final ItemStack stack = LuminaxWandItem.find(player);
-            if (stack.isEmpty()) return;
-            
-            LXProperties.COLOR.applyValueItem(payload.color(), stack, LXRegistry.BLOCK.get().defaultBlockState());
-            player.getInventory().setChanged();
-        }
-        
-        @Override
-        public SLPayload.Type<SetColorPayload> type() {
-            return SetColorPayload.TYPE;
-        }
-        
-        @Override
-        public StreamCodec<? super RegistryFriendlyByteBuf, SetColorPayload> codec() {
-            return SetColorPayload.STREAM_CODEC;
-        }
+        LXProperties.COLOR.applyValueItem(payload.color(), stack, LXRegistry.BLOCK.defaultBlockState());
+        player.getInventory().setChanged();
     }
 }

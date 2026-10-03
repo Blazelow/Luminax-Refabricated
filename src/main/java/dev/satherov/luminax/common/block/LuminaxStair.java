@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public class LuminaxStair extends StairBlock implements SLEntityBlock<LuminaxBlockEntity>, LuminaxHolder {
     
     public LuminaxStair(Properties properties) {
-        super(LXRegistry.BLOCK.get().defaultBlockState(), properties.lightLevel((state) -> state.getValue(BlockStateProperties.LIT) ? 15 : 0));
+        super(LXRegistry.BLOCK.defaultBlockState(), properties.lightLevel((state) -> state.getValue(BlockStateProperties.LIT) ? 15 : 0));
         this.registerDefaultState(this.defaultBlockState().setValue(BlockStateProperties.LIT, false));
     }
     

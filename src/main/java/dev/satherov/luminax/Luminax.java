@@ -1,34 +1,27 @@
 package dev.satherov.luminax;
 
-import dev.satherov.luminax.compat.framedblocks.LXFramedBlocksCompat;
 import dev.satherov.luminax.core.LXRegistry;
 import dev.satherov.luminax.network.SetColorPayload;
 import dev.satherov.luminax.network.ToggleGlowing;
-import dev.satherov.sathlib.compat.Mods;
-import dev.satherov.sathlib.config.SLConfigLoader;
-import dev.satherov.sathlib.network.handling.SLNetworkManager;
 
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.javafmlmod.FMLModContainer;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import net.minecraft.resources.Identifier;
 
-@Mod(Luminax.MOD_ID)
-public class Luminax {
+public class Luminax implements ModInitializer {
     
     public static final String MOD_ID = "luminax";
     
-    public static final SLNetworkManager NETWORK = SLNetworkManager.create(Luminax.MOD_ID);
-    
-    public Luminax(final IEventBus bus, final FMLModContainer container) {
-        SLConfigLoader.discover(container);
-        LXRegistry.register(bus);
-        Luminax.NETWORK.add(new ToggleGlowing.Provider());
-        Luminax.NETWORK.add(new SetColorPayload.Provider());
-        Luminax.NETWORK.register(bus);
+    @Override
+    public void onInitialize() {
+        LXRegistry.init();
         
-        Mods.FRAMED_BLOCKS.run(() -> LXFramedBlocksCompat.register(bus));
+        PayloadTypeRegistry.playC2S().register(ToggleGlowing.TYPE, ToggleGlowing.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(SetColorPayload.TYPE, SetColorPayload.STREAM_CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(ToggleGlowing.TYPE, (payload, context) -> ToggleGlowing.handle(payload, context.player()));
+        ServerPlayNetworking.registerGlobalReceiver(SetColorPayload.TYPE, (payload, context) -> SetColorPayload.handle(payload, context.player()));
     }
     
     public static Identifier id(final String path) {

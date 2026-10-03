@@ -5,7 +5,7 @@ import dev.satherov.luminax.common.block.LuminaxHolder;
 import dev.satherov.luminax.core.LXProperties;
 import dev.satherov.luminax.core.LXRegistry;
 import dev.satherov.sathlib.common.item.SLItem;
-import dev.satherov.sathlib.common.item.SLItemProperties;
+import net.minecraft.world.item.Item;
 import dev.satherov.sathlib.core.annotations.NothingNull;
 import dev.satherov.sathlib.network.chat.SLComponent;
 
@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 @NothingNull
 public class LuminaxWandItem extends SLItem {
     
-    public LuminaxWandItem(SLItemProperties properties) {
+    public LuminaxWandItem(Item.Properties properties) {
         super(properties
                 .stacksTo(1)
                 .component(LXRegistry.GLOWING, false)
@@ -41,7 +41,7 @@ public class LuminaxWandItem extends SLItem {
     }
     
     private static boolean updateBlock(ServerLevel level, ItemStack stack, BlockPos pos, BlockState state) {
-        final LuminaxBlockEntity entity = LXRegistry.BLOCK_ENTITY.get().getBlockEntity(level, pos);
+        final LuminaxBlockEntity entity = LXRegistry.BLOCK_ENTITY.getBlockEntity(level, pos);
         if (!(state.getBlock() instanceof LuminaxHolder) || entity == null) return false;
         
         BlockState updated = LXProperties.CONTAINER.applyToBlock(stack, state, entity).state();
@@ -54,7 +54,7 @@ public class LuminaxWandItem extends SLItem {
         LXProperties.CONTAINER.forEach(property -> builder.accept(SLComponent.empty()
                 .append(property.getName().translate(ChatFormatting.GRAY))
                 .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
-                .append(property.displayItemValue(stack, LXRegistry.BLOCK.get().defaultBlockState())))
+                .append(property.displayItemValue(stack, LXRegistry.BLOCK.defaultBlockState())))
         );
     }
     

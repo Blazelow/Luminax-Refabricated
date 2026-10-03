@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.141'
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
     id 'io.freefair.lombok' version '9.2.0'
     id 'idea'
 }
@@ -30,86 +30,37 @@ java {
     withJavadocJar()
 }
 
-neoForge {
-    version = project.neo_version
-
-    // accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        client {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        server {
-            server()
-            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        data {
-            clientData()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
-        }
-    }
-}
-
-configurations {
-    runtimeClasspath.extendsFrom localRuntime
-}
-
 repositories {
     mavenLocal()
     mavenCentral()
-    maven {
-        url "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
     maven { // JEI
         url "https://maven.blamejared.com/"
     }
     maven { // Jade
         url "https://api.modrinth.com/maven"
     }
-    maven { // Sathlib
-        url 'https://maven.satherov.dev/releases'
-    }
 }
 
 dependencies {
-    jarJar(implementation "dev.satherov.sathlib:sathlib:${sathlib_version}+26.1.2")
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-    compileOnly("mezz.jei:jei-26.1.2-neoforge-api:${jei_version}")
-    runtimeOnly("mezz.jei:jei-26.1.2-neoforge:${jei_version}")
+    compileOnly("org.jspecify:jspecify:1.0.0")
+    compileOnly("org.jetbrains:annotations:26.0.2")
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+
+    compileOnly("mezz.jei:jei-26.1.2-fabric-api:${jei_version}")
+    runtimeOnly("mezz.jei:jei-26.1.2-fabric:${jei_version}")
 
     implementation "maven.modrinth:jade:${jade_version}"
-    implementation "curse.maven:framedblocks-441647:${framed_blocks_version}"
-
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
+            loader_version         : loader_version,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
@@ -122,7 +73,6 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 }
 
 sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
 
 publishing {
     publications {

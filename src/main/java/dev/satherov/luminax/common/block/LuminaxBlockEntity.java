@@ -5,9 +5,6 @@ import lombok.Getter;
 import dev.satherov.luminax.core.LXRegistry;
 import dev.satherov.sathlib.core.annotations.NothingNull;
 
-import net.neoforged.neoforge.model.data.ModelData;
-import net.neoforged.neoforge.model.data.ModelProperty;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -25,12 +22,10 @@ import org.jetbrains.annotations.Nullable;
 @NothingNull
 public class LuminaxBlockEntity extends BlockEntity {
     
-    private static final ModelProperty<Integer> COLOR = new ModelProperty<>();
-    
     private @Getter int color = 0xFFFFFF;
     
     public LuminaxBlockEntity(BlockPos pos, BlockState blockState) {
-        super(LXRegistry.BLOCK_ENTITY.get(), pos, blockState);
+        super(LXRegistry.BLOCK_ENTITY, pos, blockState);
     }
     
     public void setColor(int color) {
@@ -58,7 +53,6 @@ public class LuminaxBlockEntity extends BlockEntity {
         if (this.level == null) return;
         this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL);
         this.level.updateNeighborsAt(this.worldPosition, this.getBlockState().getBlock());
-        if (this.level.isClientSide()) this.requestModelDataUpdate();
     }
     
     @Override
@@ -69,10 +63,5 @@ public class LuminaxBlockEntity extends BlockEntity {
     @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
-    }
-    
-    @Override
-    public ModelData getModelData() {
-        return ModelData.builder().with(LuminaxBlockEntity.COLOR, this.color).build();
     }
 }
