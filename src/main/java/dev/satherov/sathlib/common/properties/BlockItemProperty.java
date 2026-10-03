@@ -348,7 +348,6 @@ public class BlockItemProperty<T> {
          );
       }
 
-      @NonNull
       @Override
       public String toString() {
          return "BlockItemProperty.BlockItemPropertyBuilder(identifier="
