@@ -31,6 +31,7 @@ import com.mojang.serialization.Codec;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -74,7 +75,7 @@ public final class LXRegistry {
     public static final LuminaxButton BUTTON = LXRegistry.register("luminax_button", LuminaxButton::new);
     public static final BlockEntityType<LuminaxBlockEntity> BLOCK_ENTITY = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE, Luminax.id("glass_tile"),
-            new BlockEntityType<>(LuminaxBlockEntity::new, LXRegistry.BLOCKS.toArray(Block[]::new))
+            new BlockEntityType<>(LuminaxBlockEntity::new, Set.copyOf(LXRegistry.BLOCKS))
     );
     
     private static <T extends Item> T registerItem(String name, Function<Item.Properties, T> factory) {

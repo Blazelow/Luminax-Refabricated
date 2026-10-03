@@ -18,8 +18,8 @@ public class Luminax implements ModInitializer {
     public void onInitialize() {
         LXRegistry.init();
         
-        PayloadTypeRegistry.playC2S().register(ToggleGlowing.TYPE, ToggleGlowing.STREAM_CODEC);
-        PayloadTypeRegistry.playC2S().register(SetColorPayload.TYPE, SetColorPayload.STREAM_CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(ToggleGlowing.TYPE, ToggleGlowing.STREAM_CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(SetColorPayload.TYPE, SetColorPayload.STREAM_CODEC);
         ServerPlayNetworking.registerGlobalReceiver(ToggleGlowing.TYPE, (payload, context) -> ToggleGlowing.handle(payload, context.player()));
         ServerPlayNetworking.registerGlobalReceiver(SetColorPayload.TYPE, (payload, context) -> SetColorPayload.handle(payload, context.player()));
     }

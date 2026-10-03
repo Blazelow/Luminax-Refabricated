@@ -22,7 +22,7 @@ public interface PropertyExtractor<T> {
    }
 
    static <T> PropertyExtractor<T> item(Supplier<DataComponentType<T>> component, T defaultValue) {
-      return (var2, item) -> (T)item.stack().getOrDefault(component, defaultValue);
+      return (var2, item) -> (T)item.stack().getOrDefault(component.get(), defaultValue);
    }
 
    T extract(PropertyBlockHolder var1, PropertyItemHolder var2);

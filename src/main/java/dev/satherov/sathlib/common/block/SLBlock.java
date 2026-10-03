@@ -29,8 +29,7 @@ import org.slf4j.LoggerFactory;
 @NothingNull
 public class SLBlock extends Block {
    private static final Logger log = LoggerFactory.getLogger(SLBlock.class);
-   @Nullable
-   private SLBlock.StateBuilder pendingStateBuilder;
+   private SLBlock.@Nullable StateBuilder pendingStateBuilder;
 
    public SLBlock(Properties properties) {
       super(properties);
@@ -101,8 +100,9 @@ public class SLBlock extends Block {
          return new SLBlock.StateBuilder();
       }
 
-      private static <T extends Comparable<T>> BlockState setUnchecked(BlockState state, Property<?> property, @Nullable Comparable<?> value) {
-         return value == null ? state : (BlockState)state.setValue(property, value);
+      @SuppressWarnings({"unchecked", "rawtypes"})
+      private static BlockState setUnchecked(BlockState state, Property<?> property, @Nullable Comparable<?> value) {
+         return value == null ? state : (BlockState)state.setValue((Property) property, (Comparable) value);
       }
 
       public <T extends Comparable<T>, V extends T> SLBlock.StateBuilder addValue(Property<T> property, V defaultValue) {

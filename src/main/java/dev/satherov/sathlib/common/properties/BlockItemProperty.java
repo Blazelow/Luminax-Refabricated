@@ -10,7 +10,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 @NothingNull
@@ -272,69 +271,58 @@ public class BlockItemProperty<T> {
       BlockItemPropertyBuilder() {
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> identifier(Identifier identifier) {
          this.identifier = identifier;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> type(Class<T> type) {
          this.type = type;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> name(SLTranslatable name) {
          this.name = name;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> cycler(PropertyCycler<T> cycler) {
          this.cycler = cycler;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> itemExtractor(PropertyExtractor<T> itemExtractor) {
          this.itemExtractor = itemExtractor;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> itemApplicator(PropertyApplicator<T, PropertyItemHolder> itemApplicator) {
          this.itemApplicator = itemApplicator;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> blockExtractor(PropertyExtractor<T> blockExtractor) {
          this.blockExtractor = blockExtractor;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> blockApplicator(PropertyApplicator<T, PropertyBlockHolder> blockApplicator) {
          this.blockApplicator = blockApplicator;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> valueDisplayer(PropertyDisplayer<T> valueDisplayer) {
          this.valueDisplayer$value = valueDisplayer;
          this.valueDisplayer$set = true;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty.BlockItemPropertyBuilder<T> tooltipDisplayer(PropertyDisplayer<T> tooltipDisplayer) {
          this.tooltipDisplayer$value = tooltipDisplayer;
          this.tooltipDisplayer$set = true;
          return this;
       }
 
-      @NonNull
       public BlockItemProperty<T> build() {
          PropertyDisplayer<T> valueDisplayer$value = this.valueDisplayer$value;
          if (!this.valueDisplayer$set) {
