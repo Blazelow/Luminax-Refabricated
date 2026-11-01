@@ -5,12 +5,13 @@
   "name": "${mod_name}",
   "description": "Adds simple glowing blocks to the game.",
   "authors": [
-    "Satherov"
+    "Satherov",
+    "Blazelow"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/luminax",
-    "issues": "https://github.com/SathLabs/Luminax/issues",
-    "sources": "https://github.com/SathLabs/Luminax"
+    "homepage": "https://github.com/Blazelow/Luminax-Refabricated",
+    "issues": "https://github.com/Blazelow/Luminax-Refabricated/issues",
+    "sources": "https://github.com/Blazelow/Luminax-Refabricated"
   },
   "license": "${mod_license}",
   "icon": "luminax.png",
