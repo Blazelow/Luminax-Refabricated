@@ -11,6 +11,8 @@ You can the **Luminax Wand** to modify color and the light emission of the block
 
 This is the **Fabric** port for Minecraft 26.3 (requires Fabric API). The Framed Blocks integration is not available on Fabric.
 
+Luminax was created by [Satherov](https://github.com/Satherov) ([original project](https://github.com/SathLabs/Luminax)). The Fabric port is maintained by [Blazelow](https://github.com/Blazelow) and is licensed under the same LGPLv3 license.
+
 Currently included blocks are:  
  - Full block  
  - Slab  
