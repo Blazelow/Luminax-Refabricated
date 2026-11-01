@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'net.fabricmc.fabric-loom' version "${loom_version}"
     id 'idea'
+    id 'me.modmuss50.mod-publish-plugin' version '1.1.0'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -77,6 +78,26 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 }
 
 sourceSets.main.resources.srcDir generateModMetadata
+
+// Upload to CurseForge with: gradlew publishMods (set CURSEFORGE_TOKEN and curseforge_project_id first).
+// Without a token it only does a dry run and prints what it would upload.
+publishMods {
+    file = tasks.jar.archiveFile
+    modLoaders.add('fabric')
+    type = STABLE
+    version = project.version
+    displayName = "Luminax ${mod_version} for Minecraft ${minecraft_version}"
+    changelog = providers.environmentVariable('CHANGELOG')
+            .orElse("Fabric port of Luminax for Minecraft ${minecraft_version}.")
+    dryRun = !providers.environmentVariable('CURSEFORGE_TOKEN').isPresent()
+
+    curseforge {
+        accessToken = providers.environmentVariable('CURSEFORGE_TOKEN')
+        projectId = providers.gradleProperty('curseforge_project_id')
+        minecraftVersions.add(minecraft_version)
+        requires('fabric-api')
+    }
+}
 
 publishing {
     publications {
