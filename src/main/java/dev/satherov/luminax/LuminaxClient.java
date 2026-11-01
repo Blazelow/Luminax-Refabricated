@@ -24,15 +24,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 
 @NothingNull
 public class LuminaxClient implements ClientModInitializer {
     
+    // GLFW key codes (X and V). Minecraft 26.3 no longer exposes LWJGL GLFW to the mod, so they are written out here.
+    private static final int KEY_X = 88;
+    private static final int KEY_V = 86;
+
     public static final SLKeybindManager KEYBINDS = SLKeybindManager.create(Luminax.MOD_ID, Luminax.id("default"));
-    public static final KeyMapping TOGGLE_GLOWING = LuminaxClient.KEYBINDS.add(LXLanguage.KEY_TOGGLE_GLOWING, GLFW.GLFW_KEY_X, () -> {
+    public static final KeyMapping TOGGLE_GLOWING = LuminaxClient.KEYBINDS.add(LXLanguage.KEY_TOGGLE_GLOWING, KEY_X, () -> {
         final Minecraft mc = Minecraft.getInstance();
         final Player player = mc.player;
         if (mc.level == null || player == null || mc.gui.screen() != null) return;
@@ -44,7 +47,7 @@ public class LuminaxClient implements ClientModInitializer {
         stack.set(LXRegistry.GLOWING, enabled);
         ClientPlayNetworking.send(new ToggleGlowing(enabled));
     });
-    public static final KeyMapping OPEN_COLOR_PICKER = LuminaxClient.KEYBINDS.add(LXLanguage.KEY_OPEN_COLOR_PICKER, GLFW.GLFW_KEY_V, () -> {
+    public static final KeyMapping OPEN_COLOR_PICKER = LuminaxClient.KEYBINDS.add(LXLanguage.KEY_OPEN_COLOR_PICKER, KEY_V, () -> {
         final Minecraft mc = Minecraft.getInstance();
         final Player player = mc.player;
         if (mc.level == null || player == null || mc.gui.screen() != null) return;
