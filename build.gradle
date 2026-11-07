@@ -79,8 +79,8 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 
 sourceSets.main.resources.srcDir generateModMetadata
 
-// Upload to CurseForge with: gradlew publishMods (set CURSEFORGE_TOKEN and curseforge_project_id first).
-// Without a token it only does a dry run and prints what it would upload.
+// Upload with: gradlew publishCurseforge (CURSEFORGE_TOKEN + curseforge_project_id) or gradlew publishModrinth (MODRINTH_TOKEN + modrinth_project_id).
+// Without any token it only does a dry run and prints what it would upload.
 publishMods {
     file = tasks.jar.archiveFile
     modLoaders.add('fabric')
@@ -88,7 +88,7 @@ publishMods {
     version = project.version
     displayName = "Luminax ${mod_version} for Minecraft ${minecraft_version}"
     changelog = "Luminax port for ${minecraft_version}"
-    dryRun = !providers.environmentVariable('CURSEFORGE_TOKEN').isPresent()
+    dryRun = !providers.environmentVariable('CURSEFORGE_TOKEN').isPresent() && !providers.environmentVariable('MODRINTH_TOKEN').isPresent()
 
     curseforge {
         accessToken = providers.environmentVariable('CURSEFORGE_TOKEN')
@@ -96,6 +96,13 @@ publishMods {
         minecraftVersions.add(minecraft_version)
         clientRequired = true
         serverRequired = true
+        requires('fabric-api')
+    }
+
+    modrinth {
+        accessToken = providers.environmentVariable('MODRINTH_TOKEN')
+        projectId = providers.gradleProperty('modrinth_project_id')
+        minecraftVersions.add(minecraft_version)
         requires('fabric-api')
     }
 }
