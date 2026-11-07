@@ -86,7 +86,7 @@ publishMods {
     modLoaders.add('fabric')
     type = STABLE
     version = project.version
-    displayName = "Luminax ${mod_version} for Minecraft ${minecraft_version}"
+    displayName = "Luminax: Refabricated ${mod_version} for ${minecraft_version}"
     changelog = "Luminax port for ${minecraft_version}"
     dryRun = !providers.environmentVariable('CURSEFORGE_TOKEN').isPresent() && !providers.environmentVariable('MODRINTH_TOKEN').isPresent()
 
