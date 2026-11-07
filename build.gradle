@@ -94,6 +94,8 @@ publishMods {
         accessToken = providers.environmentVariable('CURSEFORGE_TOKEN')
         projectId = providers.gradleProperty('curseforge_project_id')
         minecraftVersions.add(minecraft_version)
+        clientRequired = true
+        serverRequired = true
         requires('fabric-api')
     }
 }
