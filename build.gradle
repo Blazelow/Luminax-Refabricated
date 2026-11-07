@@ -87,8 +87,7 @@ publishMods {
     type = STABLE
     version = project.version
     displayName = "Luminax ${mod_version} for Minecraft ${minecraft_version}"
-    changelog = providers.environmentVariable('CHANGELOG')
-            .orElse("Fabric port of Luminax for Minecraft ${minecraft_version}.")
+    changelog = "Luminax port for ${minecraft_version}"
     dryRun = !providers.environmentVariable('CURSEFORGE_TOKEN').isPresent()
 
     curseforge {
